@@ -1,0 +1,1131 @@
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+html,
+body {
+    width: 100%;
+    height: 100%;
+}
+
+body {
+    overflow: hidden;
+    background: #030304;
+    color: #fff;
+
+    font-family:
+        "Manrope",
+        system-ui,
+        -apple-system,
+        BlinkMacSystemFont,
+        "Segoe UI",
+        sans-serif;
+}
+
+
+/* =========================================================
+   BACKGROUND
+========================================================= */
+
+.backdrop {
+    position: fixed;
+    inset: 0;
+
+    z-index: -10;
+
+    overflow: hidden;
+
+    background: #030304;
+}
+
+.backdrop video {
+    position: absolute;
+
+    width: 100%;
+    height: 100%;
+
+    object-fit: cover;
+
+    /* Brighter / clearer wallpaper */
+    filter:
+        brightness(.72)
+        contrast(1.08)
+        saturate(.92);
+}
+
+.dark-overlay {
+    position: absolute;
+
+    inset: 0;
+
+    background:
+        linear-gradient(
+            180deg,
+            rgba(0,0,0,.22),
+            rgba(0,0,0,.02) 40%,
+            rgba(0,0,0,.42)
+        );
+}
+
+.vignette {
+    position: absolute;
+
+    inset: 0;
+
+    box-shadow:
+        inset 0 0 180px 70px rgba(0,0,0,.45);
+}
+
+
+/* =========================================================
+   GRAIN
+========================================================= */
+
+.grain {
+    position: fixed;
+
+    inset: 0;
+
+    z-index: 30;
+
+    pointer-events: none;
+
+    opacity: .025;
+
+    background-image:
+        url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140'%3E%3Cfilter id='n'%3E%3CfeTurbulence baseFrequency='.9' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+
+
+/* =========================================================
+   CURSOR GLOW
+========================================================= */
+
+#cursorGlow {
+    position: fixed;
+
+    width: 420px;
+    height: 420px;
+
+    border-radius: 50%;
+
+    pointer-events: none;
+
+    transform: translate(-50%, -50%);
+
+    background:
+        radial-gradient(
+            circle,
+            rgba(255,45,45,.075),
+            transparent 68%
+        );
+
+    z-index: 2;
+
+    opacity: 0;
+
+    transition:
+        opacity .3s ease;
+}
+
+
+/* =========================================================
+   TOP BAR
+========================================================= */
+
+.topbar {
+    position: fixed;
+
+    top: 0;
+    left: 0;
+    right: 0;
+
+    height: 85px;
+
+    padding:
+        0 42px;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: space-between;
+
+    z-index: 10;
+}
+
+
+/* =========================================================
+   WORDMARK
+========================================================= */
+
+.wordmark {
+    display: flex;
+
+    align-items: center;
+
+    gap: 10px;
+
+    color:
+        rgba(255,255,255,.72);
+
+    font-family:
+        "DM Mono",
+        monospace;
+
+    font-size: 10px;
+
+    letter-spacing:
+        .30em;
+
+    text-decoration: none;
+
+    transition:
+        color .3s ease,
+        text-shadow .3s ease,
+        transform .3s ease;
+}
+
+.wordmark:hover {
+    color: #fff;
+
+    text-shadow:
+        0 0 16px rgba(255,255,255,.18);
+
+    transform:
+        translateY(-1px);
+}
+
+.wordmark-dot {
+    width: 7px;
+    height: 7px;
+
+    border-radius: 50%;
+
+    background: #ff3d4d;
+
+    box-shadow:
+        0 0 8px #ff3d4d,
+        0 0 20px rgba(255,60,70,.75);
+}
+
+
+/* =========================================================
+   CUSTOM MUSIC PLAYER
+========================================================= */
+
+.music-player {
+    width: 340px;
+    height: 58px;
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 11px;
+
+    padding:
+        7px 12px 7px 8px;
+
+    border:
+        1px solid
+        rgba(255,255,255,.12);
+
+    border-radius: 999px;
+
+    background:
+        rgba(5,5,7,.42);
+
+    backdrop-filter:
+        blur(20px);
+
+    -webkit-backdrop-filter:
+        blur(20px);
+
+    box-shadow:
+        0 15px 50px rgba(0,0,0,.30),
+        inset 0 1px rgba(255,255,255,.06);
+
+    transition:
+        transform .35s cubic-bezier(.16,1,.3,1),
+        border-color .35s ease,
+        box-shadow .35s ease;
+}
+
+.music-player:hover {
+    transform:
+        translateY(-2px);
+
+    border-color:
+        rgba(255,255,255,.21);
+
+    box-shadow:
+        0 18px 55px rgba(0,0,0,.40),
+        0 0 30px rgba(255,40,50,.08);
+}
+
+
+/* =========================================================
+   MUSIC BUTTON
+========================================================= */
+
+.music-button {
+    width: 39px;
+    height: 39px;
+
+    flex-shrink: 0;
+
+    border: none;
+
+    border-radius: 50%;
+
+    background:
+        rgba(255,255,255,.10);
+
+    color: #fff;
+
+    cursor: pointer;
+
+    display: flex;
+
+    align-items: center;
+    justify-content: center;
+
+    font-size: 11px;
+
+    transition:
+        transform .25s ease,
+        background .25s ease,
+        box-shadow .25s ease;
+}
+
+.music-button:hover {
+    transform:
+        scale(1.1);
+
+    background:
+        rgba(255,255,255,.18);
+
+    box-shadow:
+        0 0 20px rgba(255,255,255,.15);
+}
+
+
+/* =========================================================
+   MUSIC INFO
+========================================================= */
+
+.music-info {
+    min-width: 0;
+
+    flex: 1;
+
+    display: flex;
+
+    flex-direction: column;
+}
+
+.music-title {
+    font-size: 10px;
+
+    font-weight: 800;
+
+    letter-spacing: .02em;
+
+    white-space: nowrap;
+
+    overflow: hidden;
+
+    text-overflow: ellipsis;
+}
+
+.music-artist {
+    margin-top: 3px;
+
+    font-size: 8px;
+
+    color:
+        rgba(255,255,255,.42);
+
+    white-space: nowrap;
+
+    overflow: hidden;
+
+    text-overflow: ellipsis;
+}
+
+
+/* =========================================================
+   MUSIC WAVE
+========================================================= */
+
+.wave {
+    display: flex;
+
+    align-items: center;
+
+    gap: 2px;
+
+    height: 22px;
+}
+
+.wave span {
+    width: 2px;
+    height: 5px;
+
+    border-radius: 3px;
+
+    background:
+        #ff4050;
+
+    box-shadow:
+        0 0 8px rgba(255,64,80,.45);
+}
+
+.wave.playing span:nth-child(1) {
+    animation:
+        wave .65s infinite alternate;
+}
+
+.wave.playing span:nth-child(2) {
+    animation:
+        wave .45s infinite alternate .1s;
+}
+
+.wave.playing span:nth-child(3) {
+    animation:
+        wave .70s infinite alternate .18s;
+}
+
+.wave.playing span:nth-child(4) {
+    animation:
+        wave .52s infinite alternate .11s;
+}
+
+.wave.playing span:nth-child(5) {
+    animation:
+        wave .68s infinite alternate .23s;
+}
+
+@keyframes wave {
+    from {
+        height: 4px;
+    }
+
+    to {
+        height: 17px;
+    }
+}
+
+
+/* =========================================================
+   MAIN
+========================================================= */
+
+.main {
+    width:
+        min(
+            850px,
+            calc(100% - 40px)
+        );
+
+    height: 100vh;
+
+    margin: auto;
+
+    display: flex;
+
+    flex-direction: column;
+
+    justify-content: center;
+
+    align-items: center;
+
+    position: relative;
+
+    z-index: 5;
+}
+
+
+/* =========================================================
+   PROFILE
+========================================================= */
+
+.profile {
+    display: flex;
+
+    flex-direction: column;
+
+    align-items: center;
+
+    text-align: center;
+}
+
+
+/* =========================================================
+   AVATAR
+========================================================= */
+
+.avatar {
+    width: 118px;
+    height: 118px;
+
+    position: relative;
+
+    display: grid;
+
+    place-items: center;
+
+    margin-bottom: 18px;
+}
+
+.avatar-image {
+    width: 94px;
+    height: 94px;
+
+    padding: 3px;
+
+    border-radius: 50%;
+
+    background:
+        linear-gradient(
+            145deg,
+            rgba(255,255,255,.92),
+            rgba(255,255,255,.04)
+        );
+
+    box-shadow:
+        0 0 0 1px rgba(255,255,255,.08),
+        0 0 40px rgba(255,45,45,.12);
+
+    transition:
+        transform .55s cubic-bezier(.16,1,.3,1),
+        box-shadow .55s ease;
+}
+
+.avatar-image img {
+    width: 100%;
+    height: 100%;
+
+    border-radius: 50%;
+
+    object-fit: cover;
+}
+
+.avatar:hover .avatar-image {
+    transform:
+        scale(1.08);
+
+    box-shadow:
+        0 0 0 1px rgba(255,255,255,.24),
+        0 0 70px rgba(255,45,45,.30);
+}
+
+
+/* =========================================================
+   ORBITS
+========================================================= */
+
+.orbit {
+    position: absolute;
+
+    border:
+        1px solid
+        rgba(255,255,255,.08);
+
+    border-radius: 50%;
+
+    transition:
+        transform .6s cubic-bezier(.16,1,.3,1),
+        border-color .6s ease;
+}
+
+.orbit-one {
+    inset: 8px;
+
+    transform:
+        rotate(-18deg);
+}
+
+.orbit-two {
+    inset: 1px;
+
+    transform:
+        rotate(55deg);
+
+    border-color:
+        rgba(255,60,60,.13);
+}
+
+.avatar:hover .orbit-one {
+    transform:
+        rotate(25deg)
+        scale(1.08);
+
+    border-color:
+        rgba(255,255,255,.16);
+}
+
+.avatar:hover .orbit-two {
+    transform:
+        rotate(100deg)
+        scale(1.07);
+
+    border-color:
+        rgba(255,65,65,.26);
+}
+
+
+/* =========================================================
+   ONLINE DOT
+========================================================= */
+
+.online {
+    position: absolute;
+
+    right: 11px;
+    bottom: 10px;
+
+    width: 12px;
+    height: 12px;
+
+    border:
+        3px solid
+        #09090b;
+
+    border-radius: 50%;
+
+    background:
+        #56e08b;
+
+    box-shadow:
+        0 0 15px rgba(86,224,139,.8);
+}
+
+
+/* =========================================================
+   USERNAME
+========================================================= */
+
+.username {
+    display: flex;
+
+    justify-content: center;
+
+    align-items: center;
+
+    user-select: none;
+}
+
+.username span {
+    display: inline-block;
+
+    font-size:
+        clamp(
+            38px,
+            5vw,
+            58px
+        );
+
+    font-weight: 800;
+
+    line-height: .95;
+
+    letter-spacing:
+        -.065em;
+
+    text-shadow:
+        0 10px 45px rgba(0,0,0,.40);
+
+    transition:
+        transform .45s cubic-bezier(.16,1,.3,1),
+        color .35s ease,
+        text-shadow .35s ease;
+}
+
+.username:hover span {
+    color: #fff;
+
+    text-shadow:
+        0 0 18px rgba(255,255,255,.20),
+        0 0 36px rgba(255,45,45,.10);
+}
+
+.username:hover span:nth-child(1) {
+    transform:
+        translateY(-7px)
+        rotate(-5deg);
+
+    transition-delay:
+        .00s;
+}
+
+.username:hover span:nth-child(2) {
+    transform:
+        translateY(5px)
+        rotate(3deg);
+
+    transition-delay:
+        .025s;
+}
+
+.username:hover span:nth-child(3) {
+    transform:
+        translateY(-9px)
+        rotate(4deg);
+
+    transition-delay:
+        .05s;
+}
+
+.username:hover span:nth-child(4) {
+    transform:
+        translateY(4px)
+        rotate(-3deg);
+
+    transition-delay:
+        .075s;
+}
+
+.username:hover span:nth-child(5) {
+    transform:
+        translateY(-6px)
+        rotate(3deg);
+
+    transition-delay:
+        .10s;
+}
+
+.username:hover span:nth-child(6) {
+    transform:
+        translateY(7px)
+        rotate(-4deg);
+
+    transition-delay:
+        .125s;
+}
+
+.username:hover span:nth-child(7) {
+    transform:
+        translateY(-8px)
+        rotate(2deg);
+
+    transition-delay:
+        .15s;
+}
+
+.username:hover span:nth-child(8) {
+    transform:
+        translateY(6px)
+        rotate(-3deg);
+
+    transition-delay:
+        .175s;
+}
+
+.username:hover span:nth-child(9) {
+    transform:
+        translateY(-7px)
+        rotate(4deg);
+
+    transition-delay:
+        .20s;
+}
+
+.username:hover span:nth-child(10) {
+    transform:
+        translateY(5px)
+        rotate(-3deg);
+
+    transition-delay:
+        .225s;
+}
+
+.username:hover span:nth-child(11) {
+    transform:
+        translateY(-8px)
+        rotate(3deg);
+
+    transition-delay:
+        .25s;
+}
+
+.username:hover span:nth-child(12) {
+    transform:
+        translateY(4px)
+        rotate(-2deg);
+
+    transition-delay:
+        .275s;
+}
+
+
+/* =========================================================
+   TAGLINE
+========================================================= */
+
+.tagline {
+    margin-top: 11px;
+
+    font-size: 12px;
+
+    color:
+        rgba(255,255,255,.56);
+}
+
+.tagline span {
+    display: inline-block;
+
+    transition:
+        transform .35s cubic-bezier(.16,1,.3,1),
+        color .35s ease,
+        text-shadow .35s ease;
+}
+
+.tagline span:hover {
+    transform:
+        translateY(-4px)
+        scale(1.05);
+
+    color: #fff;
+
+    text-shadow:
+        0 0 17px rgba(255,255,255,.28);
+}
+
+
+/* =========================================================
+   SOCIAL GRID
+========================================================= */
+
+.socials {
+    width: 100%;
+
+    display: grid;
+
+    grid-template-columns:
+        repeat(5,1fr);
+
+    gap: 10px;
+
+    margin-top: 38px;
+}
+
+
+/* =========================================================
+   SOCIAL CARD
+========================================================= */
+
+.social {
+    position: relative;
+
+    height: 92px;
+
+    display: flex;
+
+    flex-direction: column;
+
+    align-items: center;
+
+    justify-content: center;
+
+    gap: 9px;
+
+    border:
+        1px solid
+        transparent;
+
+    border-radius: 18px;
+
+    overflow: hidden;
+
+    background:
+        rgba(5,7,15,.15);
+
+    transition:
+        transform .45s cubic-bezier(.16,1,.3,1),
+        border-color .45s ease,
+        background .45s ease,
+        box-shadow .45s ease,
+        opacity .35s ease;
+}
+
+.social::before {
+    content: "";
+
+    position: absolute;
+
+    inset: 0;
+
+    background:
+        radial-gradient(
+            circle at 50% 48%,
+            rgba(var(--rgb),.18),
+            transparent 60%
+        );
+
+    opacity: 0;
+
+    transition:
+        opacity .45s ease;
+}
+
+.social::after {
+    content: "";
+
+    position: absolute;
+
+    left: 50%;
+    top: 0;
+
+    width: 55px;
+    height: 1px;
+
+    transform:
+        translateX(-50%);
+
+    background:
+        var(--accent);
+
+    box-shadow:
+        0 0 18px 2px
+        var(--accent);
+
+    opacity: 0;
+
+    transition:
+        opacity .45s ease;
+}
+
+
+/* =========================================================
+   ICON
+========================================================= */
+
+.icon {
+    position: relative;
+
+    z-index: 2;
+
+    width: 30px;
+    height: 30px;
+
+    display: grid;
+
+    place-items: center;
+
+    transition:
+        transform .45s cubic-bezier(.16,1,.3,1),
+        filter .45s ease;
+}
+
+.icon img {
+    width: 25px;
+    height: 25px;
+
+    object-fit: contain;
+}
+
+.social > span {
+    position: relative;
+
+    z-index: 2;
+
+    font-size: 9px;
+
+    font-weight: 700;
+
+    color:
+        rgba(255,255,255,.48);
+
+    transition:
+        color .35s ease,
+        text-shadow .35s ease;
+}
+
+.social > b {
+    position: absolute;
+
+    right: 10px;
+    top: 9px;
+
+    color:
+        var(--accent);
+
+    opacity: 0;
+
+    transform:
+        translate(-4px,4px);
+
+    transition:
+        opacity .35s ease,
+        transform .35s ease;
+}
+
+
+/* =========================================================
+   SOCIAL HOVER
+========================================================= */
+
+.social:hover {
+    transform:
+        translateY(-9px)
+        scale(1.025);
+
+    border-color:
+        rgba(var(--rgb),.34);
+
+    background:
+        rgba(6,6,8,.38);
+
+    box-shadow:
+        0 20px 55px rgba(0,0,0,.28),
+        0 0 38px rgba(var(--rgb),.12);
+}
+
+.social:hover::before,
+.social:hover::after {
+    opacity: 1;
+}
+
+.social:hover .icon {
+    transform:
+        scale(1.28);
+
+    filter:
+        drop-shadow(
+            0 0 11px
+            rgba(var(--rgb),.9)
+        )
+        drop-shadow(
+            0 0 24px
+            rgba(var(--rgb),.42)
+        );
+}
+
+.social:hover > span {
+    color:
+        var(--accent);
+
+    text-shadow:
+        0 0 14px
+        rgba(var(--rgb),.55);
+}
+
+.social:hover > b {
+    opacity: 1;
+
+    transform:
+        translate(0,0);
+}
+
+
+/* =========================================================
+   FOOTER
+========================================================= */
+
+footer {
+    position: fixed;
+
+    bottom: 23px;
+
+    left: 42px;
+    right: 42px;
+
+    display: flex;
+
+    justify-content: space-between;
+
+    font-family:
+        "DM Mono",
+        monospace;
+
+    font-size: 8px;
+
+    letter-spacing: .14em;
+
+    color:
+        rgba(255,255,255,.25);
+
+    z-index: 5;
+}
+
+
+/* =========================================================
+   RESPONSIVE
+========================================================= */
+
+@media (max-width: 760px) {
+
+    body {
+        overflow: auto;
+    }
+
+    .topbar {
+        padding:
+            0 18px;
+    }
+
+    .music-player {
+        width: 290px;
+    }
+
+    .main {
+        min-height: 100vh;
+
+        height: auto;
+
+        padding:
+            110px 0 80px;
+    }
+
+    .socials {
+        grid-template-columns:
+            repeat(3,1fr);
+    }
+
+    footer {
+        left: 18px;
+        right: 18px;
+    }
+}
+
+
+@media (max-width: 500px) {
+
+    .music-player {
+        width: 250px;
+    }
+
+    .socials {
+        grid-template-columns:
+            repeat(2,1fr);
+    }
+
+    .username span {
+        font-size:
+            clamp(
+                34px,
+                10vw,
+                48px
+            );
+    }
+}
+
+
+/* =========================================================
+   REDUCED MOTION
+========================================================= */
+
+@media (prefers-reduced-motion: reduce) {
+
+    *,
+    *::before,
+    *::after {
+        animation: none !important;
+
+        transition: none !important;
+    }
+}
