@@ -1,528 +1,109 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<meta name="theme-color" content="#030304">
+<title>NevedatTiger</title>
 
-    <meta charset="UTF-8">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 
-    <meta
-        name="viewport"
-        content="width=device-width, initial-scale=1.0"
-    >
-
-    <meta
-        name="theme-color"
-        content="#030304"
-    >
-
-    <meta
-        name="description"
-        content="NevedatTiger — Personal Digital Space"
-    >
-
-    <title>NevedatTiger</title>
-
-
-    <!-- FONTS -->
-
-    <link
-        rel="preconnect"
-        href="https://fonts.googleapis.com"
-    >
-
-    <link
-        rel="preconnect"
-        href="https://fonts.gstatic.com"
-        crossorigin
-    >
-
-    <link
-        href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Manrope:wght@400;500;600;700;800&display=swap"
-        rel="stylesheet"
-    >
-
-
-    <!-- STYLES -->
-
-    <link
-        rel="stylesheet"
-        href="style.css"
-    >
-
+<link rel="stylesheet" href="style.css">
 </head>
-
 
 <body>
 
+<div class="backdrop">
+    <video id="wallpaper" autoplay muted loop playsinline preload="auto">
+        <source src="assets/wallpaper-web.mp4" type="video/mp4">
+    </video>
+    <div class="dark-overlay"></div>
+    <div class="vignette"></div>
+</div>
 
-    <!-- =====================================================
-         LIVE WALLPAPER
-    ====================================================== -->
+<div class="grain"></div>
+<div id="cursorGlow"></div>
 
-    <div class="backdrop">
+<div id="introScreen" class="intro-screen">
+    <button id="enterButton" class="intro-button" type="button" aria-label="Enter">
+        <svg class="cursor-icon" viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg">
+            <path d="M14 7L50 31L35 34L46 49L38 55L27 39L18 50Z"></path>
+        </svg>
+    </button>
+</div>
 
-        <video
-            id="wallpaper"
-            autoplay
-            muted
-            loop
-            playsinline
-            preload="auto"
-        >
+<header class="topbar">
 
-            <source
-                src="assets/wallpaper-web.mp4"
-                type="video/mp4"
-            >
+    <a href="#" class="wordmark" aria-label="Home">
+        <span class="wordmark-dot"></span>
+        NEVEDATTIGER
+    </a>
 
-        </video>
+    <div class="music-player">
 
-        <div class="dark-overlay"></div>
+        <button id="musicButton" class="music-button" type="button" aria-label="Play or pause music">
+            ▶
+        </button>
 
-        <div class="vignette"></div>
+        <div class="music-info">
+            <div class="music-title">THE PERFECT GIRL</div>
+            <div class="music-artist">THE MOTION RETROWAVE REMIX · MAREUX</div>
+        </div>
 
-    </div>
-
-
-    <!-- =====================================================
-         INTRO SCREEN
-         
-         No text.
-         Only the cursor icon.
-         Click anywhere on this screen to enter.
-    ====================================================== -->
-
-    <div
-        id="introScreen"
-        class="intro-screen"
-        aria-label="Enter website"
-    >
-
-        <div class="intro-center">
-
-            <div class="cursor-orb">
-
-                <svg
-                    class="cursor-icon"
-                    viewBox="0 0 64 64"
-                    xmlns="http://www.w3.org/2000/svg"
-                    aria-hidden="true"
-                >
-
-                    <path
-                        d="M14 7
-                           L50 31
-                           L35 34
-                           L46 49
-                           L38 55
-                           L27 39
-                           L18 50
-                           Z"
-                    />
-
-                </svg>
-
-            </div>
-
+        <div id="wave" class="wave">
+            <span></span>
+            <span></span>
+            <span></span>
+            <span></span>
+            <span></span>
         </div>
 
     </div>
 
+</header>
 
-    <!-- CURSOR LIGHT -->
+<main class="main">
 
-    <div id="cursorGlow"></div>
+    <section class="profile">
 
+        <div class="avatar">
 
-    <!-- =====================================================
-         TOP BAR
-    ====================================================== -->
+            <span class="orbit orbit-one"></span>
+            <span class="orbit orbit-two"></span>
 
-    <header class="topbar">
+            <div class="avatar-image">
+                <img src="assets/pfp.png" alt="NevedatTiger">
+            </div>
 
+            <span class="online"></span>
 
-        <!-- BRAND -->
+        </div>
+
+        <h1 class="username" aria-label="NevedatTiger">
+            <span>N</span>
+            <span>e</span>
+            <span>v</span>
+            <span>e</span>
+            <span>d</span>
+            <span>a</span>
+            <span>t</span>
+            <span>T</span>
+            <span>i</span>
+            <span>g</span>
+            <span>e</span>
+            <span>r</span>
+        </h1>
+
+        <p class="tagline">
+            <span>tech glazer</span>
+        </p>
+
+    </section>
+
+    <section class="socials">
 
         <a
-            href="#"
-            class="wordmark"
-            aria-label="Home"
-        >
-
-            <span class="wordmark-dot"></span>
-
-            NEVEDATTIGER
-
-        </a>
-
-
-        <!-- =================================================
-             CUSTOM MUSIC PLAYER
-        ================================================== -->
-
-        <div class="music-player">
-
-
-            <!-- PLAY / PAUSE -->
-
-            <button
-                id="musicButton"
-                class="music-button"
-                type="button"
-                aria-label="Play or pause music"
-            >
-                ▶
-            </button>
-
-
-            <!-- SONG INFORMATION -->
-
-            <div class="music-info">
-
-                <div class="music-title">
-                    THE PERFECT GIRL
-                </div>
-
-                <div class="music-artist">
-                    THE MOTION RETROWAVE REMIX · MAREUX
-                </div>
-
-            </div>
-
-
-            <!-- ANIMATED WAVE -->
-
-            <div
-                id="wave"
-                class="wave"
-                aria-hidden="true"
-            >
-
-                <span></span>
-                <span></span>
-                <span></span>
-                <span></span>
-                <span></span>
-
-            </div>
-
-        </div>
-
-    </header>
-
-
-    <!-- =====================================================
-         MAIN CONTENT
-    ====================================================== -->
-
-    <main class="main">
-
-
-        <!-- =================================================
-             PROFILE
-        ================================================== -->
-
-        <section class="profile">
-
-
-            <!-- AVATAR -->
-
-            <div class="avatar">
-
-                <span
-                    class="orbit orbit-one"
-                ></span>
-
-                <span
-                    class="orbit orbit-two"
-                ></span>
-
-
-                <div class="avatar-image">
-
-                    <img
-                        src="assets/pfp.png"
-                        alt="NevedatTiger"
-                    >
-
-                </div>
-
-
-                <span
-                    class="online"
-                    title="Online"
-                ></span>
-
-            </div>
-
-
-            <!-- =================================================
-                 USERNAME
-            ================================================== -->
-
-            <h1
-                class="username"
-                aria-label="NevedatTiger"
-            >
-
-                <span>N</span>
-                <span>e</span>
-                <span>v</span>
-                <span>e</span>
-                <span>d</span>
-                <span>a</span>
-                <span>t</span>
-                <span>T</span>
-                <span>i</span>
-                <span>g</span>
-                <span>e</span>
-                <span>r</span>
-
-            </h1>
-
-
-            <!-- =================================================
-                 TAGLINE
-            ================================================== -->
-
-            <p class="tagline">
-
-                <span>
-                    tech glazer
-                </span>
-
-            </p>
-
-        </section>
-
-
-        <!-- =================================================
-             SOCIAL LINKS
-        ================================================== -->
-
-        <section
-            class="socials"
-            aria-label="Social links"
-        >
-
-
-            <!-- GITHUB -->
-
-            <a
-                class="social"
-                href="https://github.com/Atruegamingfox"
-                target="_blank"
-                rel="noopener noreferrer"
-
-                style="
-                    --accent:#ffffff;
-                    --rgb:255,255,255;
-                "
-            >
-
-                <div class="icon">
-
-                    <img
-                        src="https://cdn.simpleicons.org/github/ffffff"
-                        alt=""
-                    >
-
-                </div>
-
-                <span>
-                    GitHub
-                </span>
-
-                <b>
-                    ↗
-                </b>
-
-            </a>
-
-
-            <!-- DISCORD SERVER -->
-
-            <a
-                class="social"
-                href="https://discord.gg/bRMV4DT8hF"
-                target="_blank"
-                rel="noopener noreferrer"
-
-                style="
-                    --accent:#8ea1ff;
-                    --rgb:142,161,255;
-                "
-            >
-
-                <div class="icon">
-
-                    <img
-                        src="https://cdn.simpleicons.org/discord/ffffff"
-                        alt=""
-                    >
-
-                </div>
-
-                <span>
-                    Discord
-                </span>
-
-                <b>
-                    ↗
-                </b>
-
-            </a>
-
-
-            <!-- SPOTIFY PROFILE -->
-
-            <a
-                class="social"
-                href="https://open.spotify.com/user/ii5n72zuri8obom9t5a23og6c"
-                target="_blank"
-                rel="noopener noreferrer"
-
-                style="
-                    --accent:#1ed760;
-                    --rgb:30,215,96;
-                "
-            >
-
-                <div class="icon">
-
-                    <img
-                        src="https://cdn.simpleicons.org/spotify/ffffff"
-                        alt=""
-                    >
-
-                </div>
-
-                <span>
-                    Spotify
-                </span>
-
-                <b>
-                    ↗
-                </b>
-
-            </a>
-
-
-            <!-- STEAM -->
-
-            <a
-                class="social"
-                href="https://steamcommunity.com/profiles/76561199629598765"
-                target="_blank"
-                rel="noopener noreferrer"
-
-                style="
-                    --accent:#66c0f4;
-                    --rgb:102,192,244;
-                "
-            >
-
-                <div class="icon">
-
-                    <img
-                        src="https://cdn.simpleicons.org/steam/ffffff"
-                        alt=""
-                    >
-
-                </div>
-
-                <span>
-                    Steam
-                </span>
-
-                <b>
-                    ↗
-                </b>
-
-            </a>
-
-
-            <!-- REDDIT -->
-
-            <a
-                class="social"
-                href="https://www.reddit.com/user/Ok_Athlete8720/"
-                target="_blank"
-                rel="noopener noreferrer"
-
-                style="
-                    --accent:#ff4500;
-                    --rgb:255,69,0;
-                "
-            >
-
-                <div class="icon">
-
-                    <img
-                        src="https://cdn.simpleicons.org/reddit/ffffff"
-                        alt=""
-                    >
-
-                </div>
-
-                <span>
-                    Reddit
-                </span>
-
-                <b>
-                    ↗
-                </b>
-
-            </a>
-
-        </section>
-
-    </main>
-
-
-    <!-- =====================================================
-         FOOTER
-    ====================================================== -->
-
-    <footer>
-
-        <span>
-            © 2026 NEVEDATTIGER
-        </span>
-
-        <span>
-            THE INTERNET, BUT PERSONAL
-        </span>
-
-    </footer>
-
-
-    <!-- =====================================================
-         AUDIO
-         
-         IMPORTANT:
-         This file must exist:
-         assets/perfect-girl.mp3
-    ====================================================== -->
-
-    <audio
-        id="song"
-        preload="auto"
-        loop
-    >
-
-        <source
-            src="assets/perfect-girl.mp3"
-            type="audio/mpeg"
-        >
-
-    </audio>
-
-
-    <!-- JAVASCRIPT -->
-
-    <script src="script.js"></script>
-
-</body>
-
-</html>
+            class="social"
+           
