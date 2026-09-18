@@ -902,9 +902,14 @@ footer{
 <body>
 
 <div class="backdrop">
-    <video id="wallpaper" autoplay muted loop playsinline preload="auto">
-        <source src="assets/wallpaper-web.mp4" type="video/mp4">
-    </video>
+    <video
+        id="wallpaper"
+        autoplay
+        muted
+        loop
+        playsinline
+        preload="auto"
+    ></video>
 </div>
 
 <div class="dark-overlay"></div>
@@ -912,14 +917,24 @@ footer{
 <div class="grain"></div>
 <div id="cursorGlow"></div>
 
-<div id="introScreen" class="intro-screen" role="button" tabindex="0" aria-label="Enter website">
+<div
+    id="introScreen"
+    class="intro-screen"
+    role="button"
+    tabindex="0"
+    aria-label="Enter website"
+>
 
     <div class="intro-orb">
 
         <div class="liquid liquid-a"></div>
         <div class="liquid liquid-b"></div>
 
-        <svg class="cursor-icon" viewBox="0 0 64 64" aria-hidden="true">
+        <svg
+            class="cursor-icon"
+            viewBox="0 0 64 64"
+            aria-hidden="true"
+        >
             <path d="M13 7.5 51 31.8 36.2 35.2 46 50.3 38.1 55.3 28.1 39.6 18.6 50.8Z"></path>
         </svg>
 
@@ -931,14 +946,28 @@ footer{
 
 <header class="topbar">
 
-    <a href="#" class="wordmark" aria-label="Home">
+    <a
+        href="#"
+        class="wordmark"
+        aria-label="Home"
+    >
+
         <span class="wordmark-dot"></span>
-        <span class="wordmark-text">NEVEDATTIGER</span>
+
+        <span class="wordmark-text">
+            NEVEDATTIGER
+        </span>
+
     </a>
 
     <div class="music-player">
 
-        <button id="musicButton" class="music-button" type="button" aria-label="Play or pause music">
+        <button
+            id="musicButton"
+            class="music-button"
+            type="button"
+            aria-label="Play or pause music"
+        >
             ▶
         </button>
 
@@ -954,7 +983,11 @@ footer{
 
         </div>
 
-        <div id="wave" class="wave" aria-hidden="true">
+        <div
+            id="wave"
+            class="wave"
+            aria-hidden="true"
+        >
 
             <span></span>
             <span></span>
@@ -978,14 +1011,22 @@ footer{
             <span class="orbit orbit-two"></span>
 
             <div class="avatar-image">
-                <img src="assets/pfp.png" alt="NevedatTiger">
+
+                <img
+                    src="assets/pfp.png"
+                    alt="NevedatTiger"
+                >
+
             </div>
 
             <span class="online"></span>
 
         </div>
 
-        <h1 class="username" aria-label="NevedatTiger">
+        <h1
+            class="username"
+            aria-label="NevedatTiger"
+        >
 
             <span>N</span>
             <span>e</span>
@@ -1008,7 +1049,10 @@ footer{
 
     </section>
 
-    <section class="socials" aria-label="Social links">
+    <section
+        class="socials"
+        aria-label="Social links"
+    >
 
         <a
             class="social"
@@ -1019,7 +1063,10 @@ footer{
         >
 
             <div class="icon">
-                <img src="https://cdn.simpleicons.org/github/ffffff" alt="">
+                <img
+                    src="https://cdn.simpleicons.org/github/ffffff"
+                    alt=""
+                >
             </div>
 
             <span>GitHub</span>
@@ -1036,7 +1083,10 @@ footer{
         >
 
             <div class="icon">
-                <img src="https://cdn.simpleicons.org/discord/ffffff" alt="">
+                <img
+                    src="https://cdn.simpleicons.org/discord/ffffff"
+                    alt=""
+                >
             </div>
 
             <span>Discord</span>
@@ -1053,7 +1103,10 @@ footer{
         >
 
             <div class="icon">
-                <img src="https://cdn.simpleicons.org/spotify/ffffff" alt="">
+                <img
+                    src="https://cdn.simpleicons.org/spotify/ffffff"
+                    alt=""
+                >
             </div>
 
             <span>Spotify</span>
@@ -1070,7 +1123,10 @@ footer{
         >
 
             <div class="icon">
-                <img src="https://cdn.simpleicons.org/steam/ffffff" alt="">
+                <img
+                    src="https://cdn.simpleicons.org/steam/ffffff"
+                    alt=""
+                >
             </div>
 
             <span>Steam</span>
@@ -1087,7 +1143,10 @@ footer{
         >
 
             <div class="icon">
-                <img src="https://cdn.simpleicons.org/reddit/ffffff" alt="">
+                <img
+                    src="https://cdn.simpleicons.org/reddit/ffffff"
+                    alt=""
+                >
             </div>
 
             <span>Reddit</span>
@@ -1111,8 +1170,15 @@ footer{
 
 </footer>
 
-<audio id="song" preload="auto" loop>
-    <source src="assets/perfect-girl.mp3" type="audio/mpeg">
+<audio
+    id="song"
+    preload="auto"
+    loop
+>
+    <source
+        src="assets/perfect-girl.mp3"
+        type="audio/mpeg"
+    >
 </audio>
 
 <script>
@@ -1127,109 +1193,233 @@ const wordmark = document.querySelector(".wordmark");
 
 let entered = false;
 
+const wallpaperSources = [
+    "assets/wallpaper-web.mp4",
+    "/assets/wallpaper-web.mp4",
+    "/nevedattiger-personal-hub-final/assets/wallpaper-web.mp4",
+    "nevedattiger-personal-hub-final/assets/wallpaper-web.mp4"
+];
+
+let wallpaperIndex = 0;
+
 function setPlayingUI() {
+
+    if (!musicButton || !wave) {
+        return;
+    }
+
     musicButton.textContent = "❚❚";
-    musicButton.setAttribute("aria-label", "Pause music");
+
+    musicButton.setAttribute(
+        "aria-label",
+        "Pause music"
+    );
+
     wave.classList.add("playing");
 }
 
 function setPausedUI() {
+
+    if (!musicButton || !wave) {
+        return;
+    }
+
     musicButton.textContent = "▶";
-    musicButton.setAttribute("aria-label", "Play music");
+
+    musicButton.setAttribute(
+        "aria-label",
+        "Play music"
+    );
+
     wave.classList.remove("playing");
 }
 
 function playMusic() {
-    if (!song) return;
+
+    if (!song) {
+        return;
+    }
 
     song.volume = 1;
 
     const promise = song.play();
 
     if (promise) {
-        promise
-            .then(() => {
-                setPlayingUI();
-            })
-            .catch(() => {
-                setPausedUI();
-            });
+
+        promise.then(() => {
+
+            setPlayingUI();
+
+        }).catch(() => {
+
+            setPausedUI();
+
+        });
+
     }
+
 }
 
 function enterSite(event) {
 
-    if (entered) return;
+    if (entered) {
+        return;
+    }
 
     entered = true;
 
     if (event) {
+
         event.preventDefault();
         event.stopPropagation();
+
     }
 
     playMusic();
 
-    introScreen.classList.add("hidden");
+    if (introScreen) {
 
-    setTimeout(() => {
-        introScreen.style.display = "none";
-    }, 950);
+        introScreen.classList.add("hidden");
+
+        setTimeout(() => {
+
+            introScreen.style.display = "none";
+
+        }, 950);
+
+    }
+
 }
 
 if (introScreen) {
 
-    introScreen.addEventListener("click", enterSite);
+    introScreen.addEventListener(
+        "click",
+        enterSite
+    );
 
-    introScreen.addEventListener("keydown", event => {
+    introScreen.addEventListener(
+        "keydown",
+        event => {
 
-        if (
-            event.key === "Enter" ||
-            event.key === " "
-        ) {
-            enterSite(event);
+            if (
+                event.key === "Enter" ||
+                event.key === " "
+            ) {
+
+                enterSite(event);
+
+            }
+
         }
-
-    });
+    );
 
 }
 
 if (musicButton) {
 
-    musicButton.addEventListener("click", event => {
+    musicButton.addEventListener(
+        "click",
+        event => {
 
-        event.preventDefault();
-        event.stopPropagation();
+            event.preventDefault();
+            event.stopPropagation();
 
-        if (song.paused) {
-            playMusic();
-        } else {
-            song.pause();
+            if (song.paused) {
+
+                playMusic();
+
+            } else {
+
+                song.pause();
+
+            }
+
         }
-
-    });
+    );
 
 }
 
 if (song) {
 
-    song.addEventListener("play", setPlayingUI);
+    song.addEventListener(
+        "play",
+        setPlayingUI
+    );
 
-    song.addEventListener("pause", setPausedUI);
+    song.addEventListener(
+        "pause",
+        setPausedUI
+    );
 
-    song.addEventListener("ended", setPausedUI);
+    song.addEventListener(
+        "ended",
+        setPausedUI
+    );
+
+}
+
+function loadWallpaper() {
+
+    if (
+        !wallpaper ||
+        wallpaperIndex >= wallpaperSources.length
+    ) {
+        return;
+    }
+
+    wallpaper.muted = true;
+    wallpaper.loop = true;
+    wallpaper.autoplay = true;
+    wallpaper.playsInline = true;
+
+    wallpaper.src =
+        wallpaperSources[wallpaperIndex];
+
+    wallpaper.load();
+
+    const promise = wallpaper.play();
+
+    if (promise) {
+
+        promise.catch(() => {});
+
+    }
 
 }
 
 if (wallpaper) {
 
-    wallpaper.muted = true;
-    wallpaper.loop = true;
-    wallpaper.playsInline = true;
+    wallpaper.addEventListener(
+        "error",
+        () => {
 
-    wallpaper.load();
+            wallpaperIndex++;
 
-    wallpaper.play().catch(() => {});
+            loadWallpaper();
+
+        }
+    );
+
+    wallpaper.addEventListener(
+        "loadeddata",
+        () => {
+
+            wallpaper.play().catch(() => {});
+
+        }
+    );
+
+    wallpaper.addEventListener(
+        "canplay",
+        () => {
+
+            wallpaper.play().catch(() => {});
+
+        }
+    );
+
+    loadWallpaper();
 
 }
 
@@ -1275,7 +1465,10 @@ socials.forEach(card => {
             socials.forEach(other => {
 
                 if (other !== card) {
-                    other.style.opacity = ".42";
+
+                    other.style.opacity =
+                        ".42";
+
                 }
 
             });
@@ -1289,7 +1482,8 @@ socials.forEach(card => {
 
             socials.forEach(other => {
 
-                other.style.opacity = "";
+                other.style.opacity =
+                    "";
 
             });
 
