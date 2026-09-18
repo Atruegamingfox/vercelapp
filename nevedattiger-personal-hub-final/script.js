@@ -1,4 +1,139 @@
-/* =========================================================
+const introScreen = document.getElementById("introScreen");
+const song = document.getElementById("song");
+const musicButton = document.getElementById("musicButton");
+const wave = document.getElementById("wave");
+const wallpaper = document.getElementById("wallpaper");
+const cursorGlow = document.getElementById("cursorGlow");
+
+let entered = false;
+
+if (wallpaper) {
+    wallpaper.play().catch(() => {});
+}
+
+if (cursorGlow) {
+    window.addEventListener("pointermove", (event) => {
+        cursorGlow.style.left = `${event.clientX}px`;
+        cursorGlow.style.top = `${event.clientY}px`;
+        cursorGlow.style.opacity = "1";
+    }, { passive: true });
+
+    document.addEventListener("mouseleave", () => {
+        cursorGlow.style.opacity = "0";
+    });
+}
+
+function setPlaying() {
+    if (musicButton) {
+        musicButton.textContent = "❚❚";
+        musicButton.setAttribute("aria-label", "Pause music");
+    }
+
+    if (wave) {
+        wave.classList.add("playing");
+    }
+}
+
+function setPaused() {
+    if (musicButton) {
+        musicButton.textContent = "▶";
+        musicButton.setAttribute("aria-label", "Play music");
+    }
+
+    if (wave) {
+        wave.classList.remove("playing");
+    }
+}
+
+function playMusic() {
+    if (!song) return;
+
+    const promise = song.play();
+
+    if (promise && typeof promise.then === "function") {
+        promise.then(() => {
+            setPlaying();
+        }).catch(() => {
+            setPaused();
+        });
+    }
+}
+
+function enterWebsite(event) {
+    if (entered) return;
+
+    if (event) {
+        event.preventDefault();
+        event.stopPropagation();
+    }
+
+    entered = true;
+
+    if (introScreen) {
+        introScreen.classList.add("hidden");
+
+        setTimeout(() => {
+            introScreen.style.display = "none";
+        }, 1000);
+    }
+
+    playMusic();
+}
+
+if (introScreen) {
+    introScreen.addEventListener("pointerdown", enterWebsite, { once: true });
+    introScreen.addEventListener("click", enterWebsite, { once: true });
+}
+
+if (musicButton) {
+    musicButton.addEventListener("click", (event) => {
+        event.preventDefault();
+        event.stopPropagation();
+
+        if (!song) return;
+
+        if (song.paused) {
+            playMusic();
+        } else {
+            song.pause();
+        }
+    });
+}
+
+if (song) {
+    song.addEventListener("play", setPlaying);
+    song.addEventListener("pause", setPaused);
+}
+
+const socials = document.querySelectorAll(".social");
+
+socials.forEach((card) => {
+    card.addEventListener("mouseenter", () => {
+        socials.forEach((other) => {
+            if (other !== card) {
+                other.style.opacity = "0.42";
+            }
+        });
+    });
+
+    card.addEventListener("mouseleave", () => {
+        socials.forEach((other) => {
+            other.style.opacity = "";
+        });
+    });
+});
+
+const wordmark = document.querySelector(".wordmark");
+
+if (wordmark) {
+    wordmark.addEventListener("click", (event) => {
+        event.preventDefault();
+        window.scrollTo({
+            top: 0,
+            behavior: "smooth"
+        });
+    });
+}/* =========================================================
    ELEMENTS
 ========================================================= */
 
