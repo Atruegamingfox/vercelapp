@@ -9,36 +9,58 @@ const wordmark = document.querySelector(".wordmark");
 
 let entered = false;
 
+const wallpaperSources = [
+    "https://raw.githubusercontent.com/Atruegamingfox/vercelapp/main/nevedattiger-personal-hub-final/assets/wallpaper-web.mp4",
+    "https://cdn.jsdelivr.net/gh/Atruegamingfox/vercelapp@main/nevedattiger-personal-hub-final/assets/wallpaper-web.mp4",
+    "assets/wallpaper-web.mp4"
+];
+
+let wallpaperIndex = 0;
+
 function setPlayingUI() {
+    if (!musicButton || !wave) {
+        return;
+    }
+
     musicButton.textContent = "❚❚";
     musicButton.setAttribute("aria-label", "Pause music");
     wave.classList.add("playing");
 }
 
 function setPausedUI() {
+    if (!musicButton || !wave) {
+        return;
+    }
+
     musicButton.textContent = "▶";
     musicButton.setAttribute("aria-label", "Play music");
     wave.classList.remove("playing");
 }
 
 function playMusic() {
-    if (!song) return;
+    if (!song) {
+        return;
+    }
 
     song.volume = 1;
 
     const promise = song.play();
 
     if (promise) {
-        promise.then(() => {
-            setPlayingUI();
-        }).catch(() => {
-            setPausedUI();
-        });
+        promise
+            .then(() => {
+                setPlayingUI();
+            })
+            .catch(() => {
+                setPausedUI();
+            });
     }
 }
 
 function enterSite(event) {
-    if (entered) return;
+    if (entered) {
+        return;
+    }
 
     entered = true;
 
@@ -49,18 +71,23 @@ function enterSite(event) {
 
     playMusic();
 
-    introScreen.classList.add("hidden");
+    if (introScreen) {
+        introScreen.classList.add("hidden");
 
-    setTimeout(() => {
-        introScreen.style.display = "none";
-    }, 950);
+        setTimeout(() => {
+            introScreen.style.display = "none";
+        }, 950);
+    }
 }
 
 if (introScreen) {
     introScreen.addEventListener("click", enterSite);
 
     introScreen.addEventListener("keydown", event => {
-        if (event.key === "Enter" || event.key === " ") {
+        if (
+            event.key === "Enter" ||
+            event.key === " "
+        ) {
             enterSite(event);
         }
     });
@@ -70,6 +97,10 @@ if (musicButton) {
     musicButton.addEventListener("click", event => {
         event.preventDefault();
         event.stopPropagation();
+
+        if (!song) {
+            return;
+        }
 
         if (song.paused) {
             playMusic();
@@ -85,19 +116,62 @@ if (song) {
     song.addEventListener("ended", setPausedUI);
 }
 
-if (wallpaper) {
+function loadWallpaper() {
+    if (
+        !wallpaper ||
+        wallpaperIndex >= wallpaperSources.length
+    ) {
+        return;
+    }
+
     wallpaper.muted = true;
+    wallpaper.autoplay = true;
     wallpaper.loop = true;
     wallpaper.playsInline = true;
-    wallpaper.play().catch(() => {});
+
+    wallpaper.src = wallpaperSources[wallpaperIndex];
+    wallpaper.load();
+
+    const promise = wallpaper.play();
+
+    if (promise) {
+        promise.catch(() => {});
+    }
+}
+
+if (wallpaper) {
+    wallpaper.addEventListener("error", () => {
+        wallpaperIndex++;
+        loadWallpaper();
+    });
+
+    wallpaper.addEventListener("loadeddata", () => {
+        wallpaper.play().catch(() => {});
+    });
+
+    wallpaper.addEventListener("canplay", () => {
+        wallpaper.play().catch(() => {});
+    });
+
+    wallpaper.addEventListener("loadedmetadata", () => {
+        wallpaper.play().catch(() => {});
+    });
+
+    loadWallpaper();
 }
 
 if (cursorGlow) {
-    window.addEventListener("pointermove", event => {
-        cursorGlow.style.left = event.clientX + "px";
-        cursorGlow.style.top = event.clientY + "px";
-        cursorGlow.style.opacity = "1";
-    }, { passive: true });
+    window.addEventListener(
+        "pointermove",
+        event => {
+            cursorGlow.style.left = event.clientX + "px";
+            cursorGlow.style.top = event.clientY + "px";
+            cursorGlow.style.opacity = "1";
+        },
+        {
+            passive: true
+        }
+    );
 
     document.addEventListener("mouseleave", () => {
         cursorGlow.style.opacity = "0";
