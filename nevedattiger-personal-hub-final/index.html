@@ -19,6 +19,321 @@
     <video id="wallpaper" autoplay muted loop playsinline preload="auto">
         <source src="assets/wallpaper-web.mp4" type="video/mp4">
     </video>
+</div>
+
+<div class="dark-overlay"></div>
+<div class="vignette"></div>
+<div class="grain"></div>
+<div id="cursorGlow"></div>
+
+<div id="introScreen" class="intro-screen">
+    <div class="intro-cursor">
+        <div class="cursor-arrow"></div>
+    </div>
+</div>
+
+<header class="topbar">
+
+    <a href="#" class="wordmark">
+        <span class="wordmark-dot"></span>
+        NEVEDATTIGER
+    </a>
+
+    <div class="music-player">
+
+        <button id="musicButton" class="music-button" type="button">
+            ▶
+        </button>
+
+        <div class="music-info">
+            <div class="music-title">THE PERFECT GIRL</div>
+            <div class="music-artist">THE MOTION RETROWAVE REMIX · MAREUX</div>
+        </div>
+
+        <div id="wave" class="wave">
+            <span></span>
+            <span></span>
+            <span></span>
+            <span></span>
+            <span></span>
+        </div>
+
+    </div>
+
+</header>
+
+<main class="main">
+
+    <section class="profile">
+
+        <div class="avatar">
+
+            <span class="orbit orbit-one"></span>
+            <span class="orbit orbit-two"></span>
+
+            <div class="avatar-image">
+                <img src="assets/pfp.png" alt="NevedatTiger">
+            </div>
+
+            <span class="online"></span>
+
+        </div>
+
+        <h1 class="username" aria-label="NevedatTiger">
+            <span>N</span>
+            <span>e</span>
+            <span>v</span>
+            <span>e</span>
+            <span>d</span>
+            <span>a</span>
+            <span>t</span>
+            <span>T</span>
+            <span>i</span>
+            <span>g</span>
+            <span>e</span>
+            <span>r</span>
+        </h1>
+
+        <p class="tagline">
+            <span>tech glazer</span>
+        </p>
+
+    </section>
+
+    <section class="socials">
+
+        <a
+            class="social"
+            href="https://github.com/Atruegamingfox"
+            target="_blank"
+            rel="noopener noreferrer"
+            style="--accent:#ffffff;--rgb:255,255,255"
+        >
+            <div class="icon">
+                <img src="https://cdn.simpleicons.org/github/ffffff" alt="">
+            </div>
+            <span>GitHub</span>
+            <b>↗</b>
+        </a>
+
+        <a
+            class="social"
+            href="https://discord.gg/bRMV4DT8hF"
+            target="_blank"
+            rel="noopener noreferrer"
+            style="--accent:#8ea1ff;--rgb:142,161,255"
+        >
+            <div class="icon">
+                <img src="https://cdn.simpleicons.org/discord/ffffff" alt="">
+            </div>
+            <span>Discord</span>
+            <b>↗</b>
+        </a>
+
+        <a
+            class="social"
+            href="https://open.spotify.com/user/ii5n72zuri8obom9t5a23og6c"
+            target="_blank"
+            rel="noopener noreferrer"
+            style="--accent:#1ed760;--rgb:30,215,96"
+        >
+            <div class="icon">
+                <img src="https://cdn.simpleicons.org/spotify/ffffff" alt="">
+            </div>
+            <span>Spotify</span>
+            <b>↗</b>
+        </a>
+
+        <a
+            class="social"
+            href="https://steamcommunity.com/profiles/76561199629598765"
+            target="_blank"
+            rel="noopener noreferrer"
+            style="--accent:#66c0f4;--rgb:102,192,244"
+        >
+            <div class="icon">
+                <img src="https://cdn.simpleicons.org/steam/ffffff" alt="">
+            </div>
+            <span>Steam</span>
+            <b>↗</b>
+        </a>
+
+        <a
+            class="social"
+            href="https://www.reddit.com/user/Ok_Athlete8720/"
+            target="_blank"
+            rel="noopener noreferrer"
+            style="--accent:#ff4500;--rgb:255,69,0"
+        >
+            <div class="icon">
+                <img src="https://cdn.simpleicons.org/reddit/ffffff" alt="">
+            </div>
+            <span>Reddit</span>
+            <b>↗</b>
+        </a>
+
+    </section>
+
+</main>
+
+<footer>
+    <span>© 2026 NEVEDATTIGER</span>
+    <span>THE INTERNET, BUT PERSONAL</span>
+</footer>
+
+<audio id="song" preload="auto" loop>
+    <source src="assets/perfect-girl.mp3" type="audio/mpeg">
+</audio>
+
+<script>
+
+const introScreen = document.getElementById("introScreen");
+const song = document.getElementById("song");
+const musicButton = document.getElementById("musicButton");
+const wave = document.getElementById("wave");
+const wallpaper = document.getElementById("wallpaper");
+const cursorGlow = document.getElementById("cursorGlow");
+
+let entered = false;
+
+function playingUI() {
+    musicButton.textContent = "❚❚";
+    wave.classList.add("playing");
+}
+
+function pausedUI() {
+    musicButton.textContent = "▶";
+    wave.classList.remove("playing");
+}
+
+async function playSong() {
+    if (!song) return false;
+
+    try {
+        song.volume = 1;
+        await song.play();
+        playingUI();
+        return true;
+    } catch (error) {
+        pausedUI();
+        return false;
+    }
+}
+
+async function enterSite(event) {
+
+    if (entered) return;
+
+    entered = true;
+
+    if (event) {
+        event.preventDefault();
+        event.stopPropagation();
+    }
+
+    await playSong();
+
+    introScreen.classList.add("hidden");
+
+    setTimeout(() => {
+        introScreen.style.display = "none";
+    }, 950);
+}
+
+introScreen.addEventListener("pointerup", enterSite);
+introScreen.addEventListener("click", enterSite);
+
+musicButton.addEventListener("click", async (event) => {
+
+    event.preventDefault();
+    event.stopPropagation();
+
+    if (song.paused) {
+        await playSong();
+    } else {
+        song.pause();
+    }
+
+});
+
+song.addEventListener("play", playingUI);
+song.addEventListener("pause", pausedUI);
+
+wallpaper.play().catch(() => {});
+
+window.addEventListener("pointermove", (event) => {
+
+    cursorGlow.style.left = event.clientX + "px";
+    cursorGlow.style.top = event.clientY + "px";
+    cursorGlow.style.opacity = "1";
+
+});
+
+document.addEventListener("mouseleave", () => {
+    cursorGlow.style.opacity = "0";
+});
+
+const socials = document.querySelectorAll(".social");
+
+socials.forEach((card) => {
+
+    card.addEventListener("mouseenter", () => {
+
+        socials.forEach((other) => {
+
+            if (other !== card) {
+                other.style.opacity = ".42";
+            }
+
+        });
+
+    });
+
+    card.addEventListener("mouseleave", () => {
+
+        socials.forEach((other) => {
+            other.style.opacity = "";
+        });
+
+    });
+
+});
+
+document.querySelector(".wordmark").addEventListener("click", (event) => {
+
+    event.preventDefault();
+
+    window.scrollTo({
+        top: 0,
+        behavior: "smooth"
+    });
+
+});
+
+</script>
+
+</body>
+</html><!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<meta name="theme-color" content="#030304">
+<title>NevedatTiger</title>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+<link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+<div class="backdrop">
+    <video id="wallpaper" autoplay muted loop playsinline preload="auto">
+        <source src="assets/wallpaper-web.mp4" type="video/mp4">
+    </video>
     <div class="dark-overlay"></div>
     <div class="vignette"></div>
 </div>
