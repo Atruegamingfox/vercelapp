@@ -3,38 +3,41 @@ const song = document.getElementById("song");
 const musicButton = document.getElementById("musicButton");
 const wave = document.getElementById("wave");
 const wallpaper = document.getElementById("wallpaper");
-const cursorGlow = document.getElementById("cursorGlow");
-const socials = document.querySelectorAll(".social");
 const wordmark = document.querySelector(".wordmark");
+const visitCount = document.getElementById("visitCount");
+const counterStatus = document.getElementById("counterStatus");
+const socials = document.querySelectorAll(".social");
 
 let entered = false;
+let wallpaperIndex = 0;
 
 const wallpaperSources = [
-    "https://raw.githubusercontent.com/Atruegamingfox/vercelapp/main/nevedattiger-personal-hub-final/assets/wallpaper-web.mp4",
     "https://cdn.jsdelivr.net/gh/Atruegamingfox/vercelapp@main/nevedattiger-personal-hub-final/assets/wallpaper-web.mp4",
+    "https://raw.githubusercontent.com/Atruegamingfox/vercelapp/main/nevedattiger-personal-hub-final/assets/wallpaper-web.mp4",
+    "/nevedattiger-personal-hub-final/assets/wallpaper-web.mp4",
     "assets/wallpaper-web.mp4"
 ];
 
-let wallpaperIndex = 0;
-
 function setPlayingUI() {
-    if (!musicButton || !wave) {
-        return;
+    if (musicButton) {
+        musicButton.textContent = "Ⅱ";
+        musicButton.setAttribute("aria-label", "Pause music");
     }
 
-    musicButton.textContent = "❚❚";
-    musicButton.setAttribute("aria-label", "Pause music");
-    wave.classList.add("playing");
+    if (wave) {
+        wave.classList.add("playing");
+    }
 }
 
 function setPausedUI() {
-    if (!musicButton || !wave) {
-        return;
+    if (musicButton) {
+        musicButton.textContent = "▶";
+        musicButton.setAttribute("aria-label", "Play music");
     }
 
-    musicButton.textContent = "▶";
-    musicButton.setAttribute("aria-label", "Play music");
-    wave.classList.remove("playing");
+    if (wave) {
+        wave.classList.remove("playing");
+    }
 }
 
 function playMusic() {
@@ -47,13 +50,7 @@ function playMusic() {
     const promise = song.play();
 
     if (promise) {
-        promise
-            .then(() => {
-                setPlayingUI();
-            })
-            .catch(() => {
-                setPausedUI();
-            });
+        promise.then(setPlayingUI).catch(setPausedUI);
     }
 }
 
@@ -74,20 +71,19 @@ function enterSite(event) {
     if (introScreen) {
         introScreen.classList.add("hidden");
 
-        setTimeout(() => {
+        window.setTimeout(() => {
             introScreen.style.display = "none";
-        }, 950);
+        }, 900);
     }
+
+    startWallpaper();
 }
 
 if (introScreen) {
     introScreen.addEventListener("click", enterSite);
 
     introScreen.addEventListener("keydown", event => {
-        if (
-            event.key === "Enter" ||
-            event.key === " "
-        ) {
+        if (event.key === "Enter" || event.key === " ") {
             enterSite(event);
         }
     });
@@ -114,20 +110,26 @@ if (song) {
     song.addEventListener("play", setPlayingUI);
     song.addEventListener("pause", setPausedUI);
     song.addEventListener("ended", setPausedUI);
+
+    song.addEventListener("error", () => {
+        setPausedUI();
+    });
 }
 
-function loadWallpaper() {
-    if (
-        !wallpaper ||
-        wallpaperIndex >= wallpaperSources.length
-    ) {
+function startWallpaper() {
+    if (!wallpaper) {
         return;
     }
 
     wallpaper.muted = true;
+    wallpaper.defaultMuted = true;
     wallpaper.autoplay = true;
     wallpaper.loop = true;
     wallpaper.playsInline = true;
+
+    if (wallpaperIndex >= wallpaperSources.length) {
+        return;
+    }
 
     wallpaper.src = wallpaperSources[wallpaperIndex];
     wallpaper.load();
@@ -142,7 +144,10 @@ function loadWallpaper() {
 if (wallpaper) {
     wallpaper.addEventListener("error", () => {
         wallpaperIndex++;
-        loadWallpaper();
+
+        if (wallpaperIndex < wallpaperSources.length) {
+            startWallpaper();
+        }
     });
 
     wallpaper.addEventListener("loadeddata", () => {
@@ -153,46 +158,14 @@ if (wallpaper) {
         wallpaper.play().catch(() => {});
     });
 
-    wallpaper.addEventListener("loadedmetadata", () => {
-        wallpaper.play().catch(() => {});
-    });
-
-    loadWallpaper();
-}
-
-if (cursorGlow) {
-    window.addEventListener(
-        "pointermove",
-        event => {
-            cursorGlow.style.left = event.clientX + "px";
-            cursorGlow.style.top = event.clientY + "px";
-            cursorGlow.style.opacity = "1";
-        },
-        {
-            passive: true
+    document.addEventListener("visibilitychange", () => {
+        if (!document.hidden && wallpaper.paused) {
+            wallpaper.play().catch(() => {});
         }
-    );
-
-    document.addEventListener("mouseleave", () => {
-        cursorGlow.style.opacity = "0";
     });
+
+    startWallpaper();
 }
-
-socials.forEach(card => {
-    card.addEventListener("mouseenter", () => {
-        socials.forEach(other => {
-            if (other !== card) {
-                other.style.opacity = ".42";
-            }
-        });
-    });
-
-    card.addEventListener("mouseleave", () => {
-        socials.forEach(other => {
-            other.style.opacity = "";
-        });
-    });
-});
 
 if (wordmark) {
     wordmark.addEventListener("click", event => {
@@ -204,3 +177,54 @@ if (wordmark) {
         });
     });
 }
+
+socials.forEach(card => {
+    card.addEventListener("mouseenter", () => {
+        socials.forEach(other => {
+            if (other !== card) {
+                other.style.opacity = "0.42";
+            }
+        });
+    });
+
+    card.addEventListener("mouseleave", () => {
+        socials.forEach(other => {
+            other.style.opacity = "";
+        });
+    });
+});
+
+async function updateVisitCounter() {
+    if (!visitCount || !counterStatus) {
+        return;
+    }
+
+    const endpoint =
+        "https://counterapi.com/api/nevedattiger-personal-hub/view/total-visits?startNumber=3000&noFormatting=true";
+
+    try {
+        const response = await fetch(endpoint, {
+            method: "GET",
+            cache: "no-store"
+        });
+
+        if (!response.ok) {
+            throw new Error("Counter request failed");
+        }
+
+        const data = await response.json();
+        const total = Number(data.value);
+
+        if (!Number.isFinite(total)) {
+            throw new Error("Invalid counter response");
+        }
+
+        visitCount.textContent = total.toLocaleString("en-US");
+        counterStatus.textContent = "LIVE";
+    } catch {
+        visitCount.textContent = "3,000+";
+        counterStatus.textContent = "UNAVAILABLE";
+    }
+}
+
+updateVisitCounter();
