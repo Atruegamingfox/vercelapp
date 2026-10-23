@@ -4,18 +4,19 @@ const musicButton = document.getElementById("musicButton");
 const wave = document.getElementById("wave");
 const wallpaper = document.getElementById("wallpaper");
 const wordmark = document.querySelector(".wordmark");
+const socials = document.querySelectorAll(".social");
 const visitCount = document.getElementById("visitCount");
 const counterStatus = document.getElementById("counterStatus");
-const socials = document.querySelectorAll(".social");
 
 let entered = false;
 let wallpaperIndex = 0;
 
 const wallpaperSources = [
-    "https://cdn.jsdelivr.net/gh/Atruegamingfox/vercelapp@main/nevedattiger-personal-hub-final/assets/wallpaper-web.mp4",
-    "https://raw.githubusercontent.com/Atruegamingfox/vercelapp/main/nevedattiger-personal-hub-final/assets/wallpaper-web.mp4",
+    "assets/wallpaper-web.mp4",
+    "nevedattiger-personal-hub-final/assets/wallpaper-web.mp4",
     "/nevedattiger-personal-hub-final/assets/wallpaper-web.mp4",
-    "assets/wallpaper-web.mp4"
+    "https://cdn.jsdelivr.net/gh/Atruegamingfox/vercelapp@main/nevedattiger-personal-hub-final/assets/wallpaper-web.mp4",
+    "https://raw.githubusercontent.com/Atruegamingfox/vercelapp/main/nevedattiger-personal-hub-final/assets/wallpaper-web.mp4"
 ];
 
 function setPlayingUI() {
@@ -41,9 +42,7 @@ function setPausedUI() {
 }
 
 function playMusic() {
-    if (!song) {
-        return;
-    }
+    if (!song) return;
 
     song.volume = 1;
 
@@ -55,9 +54,7 @@ function playMusic() {
 }
 
 function enterSite(event) {
-    if (entered) {
-        return;
-    }
+    if (entered) return;
 
     entered = true;
 
@@ -67,6 +64,7 @@ function enterSite(event) {
     }
 
     playMusic();
+    startWallpaper();
 
     if (introScreen) {
         introScreen.classList.add("hidden");
@@ -75,8 +73,6 @@ function enterSite(event) {
             introScreen.style.display = "none";
         }, 900);
     }
-
-    startWallpaper();
 }
 
 if (introScreen) {
@@ -94,9 +90,7 @@ if (musicButton) {
         event.preventDefault();
         event.stopPropagation();
 
-        if (!song) {
-            return;
-        }
+        if (!song) return;
 
         if (song.paused) {
             playMusic();
@@ -110,14 +104,10 @@ if (song) {
     song.addEventListener("play", setPlayingUI);
     song.addEventListener("pause", setPausedUI);
     song.addEventListener("ended", setPausedUI);
-
-    song.addEventListener("error", () => {
-        setPausedUI();
-    });
 }
 
 function startWallpaper() {
-    if (!wallpaper) {
+    if (!wallpaper || wallpaperIndex >= wallpaperSources.length) {
         return;
     }
 
@@ -126,10 +116,6 @@ function startWallpaper() {
     wallpaper.autoplay = true;
     wallpaper.loop = true;
     wallpaper.playsInline = true;
-
-    if (wallpaperIndex >= wallpaperSources.length) {
-        return;
-    }
 
     wallpaper.src = wallpaperSources[wallpaperIndex];
     wallpaper.load();
@@ -182,7 +168,7 @@ socials.forEach(card => {
     card.addEventListener("mouseenter", () => {
         socials.forEach(other => {
             if (other !== card) {
-                other.style.opacity = "0.42";
+                other.style.opacity = ".42";
             }
         });
     });
@@ -195,12 +181,10 @@ socials.forEach(card => {
 });
 
 async function updateVisitCounter() {
-    if (!visitCount || !counterStatus) {
-        return;
-    }
+    if (!visitCount || !counterStatus) return;
 
     const endpoint =
-        "https://counterapi.com/api/nevedattiger-personal-hub/view/total-visits?startNumber=3000&noFormatting=true";
+        "https://counterapi.com/api/nevedattiger-personal-hub/view/total-visits?startNumber=3000";
 
     try {
         const response = await fetch(endpoint, {
@@ -209,21 +193,23 @@ async function updateVisitCounter() {
         });
 
         if (!response.ok) {
-            throw new Error("Counter request failed");
+            throw new Error("Counter unavailable");
         }
 
         const data = await response.json();
-        const total = Number(data.value);
+        const count = Number(data.value);
 
-        if (!Number.isFinite(total)) {
+        if (!Number.isFinite(count)) {
             throw new Error("Invalid counter response");
         }
 
-        visitCount.textContent = total.toLocaleString("en-US");
+        visitCount.textContent = count.toLocaleString("en-US");
         counterStatus.textContent = "LIVE";
+        counterStatus.classList.add("live");
     } catch {
         visitCount.textContent = "3,000+";
-        counterStatus.textContent = "UNAVAILABLE";
+        counterStatus.textContent = "OFFLINE";
+        counterStatus.classList.remove("live");
     }
 }
 
